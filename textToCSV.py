@@ -1,8 +1,9 @@
+from array import array
 import os
 import glob
 
-def writeCSV(data, fileName):
-    
+# function that writes the data to the csv files
+def writeCSV(data: array, fileName: str) -> str:
     numCol = len(data[0])-1
     with open(fileName, "w") as file:     
         for row in data:
@@ -17,8 +18,9 @@ def writeCSV(data, fileName):
     return f
 
 
-
-def readFromTXT(filename):
+# function to read data from txt files
+# return an array
+def readFromTXT(filename: str) -> array:
     with open(filename) as f:
         lines = f.readlines()
 
@@ -27,6 +29,31 @@ def readFromTXT(filename):
     for l in lines:
         data.append(l.split())
     return data
+
+
+# function to delete old files
+def deleteOldFiles(files: str):
+    print("\n[Deleting Old Outputs]")
+    for f in files:
+        os.remove(f)
+    print("[Deletion Completed]")
+
+
+# function for processing the files
+def processFiles(files: str, outputDir: str):
+    print("\n[Processing txt files]:")
+    for f in files:
+        data = readFromTXT(f)
+
+        name = os.path.basename(f)
+        newName = name[:-4]
+        
+        # call write csv function
+        writeCSV(data, outputDir+newName+".csv")
+        
+        print("-\t" + newName)
+    print("\n[Processing Completed]")
+
 
 if __name__ == '__main__':
     
@@ -43,28 +70,9 @@ if __name__ == '__main__':
     
     # first we delete all files in the output directory
     # we only want the output of one pdf at a time...
-    print("\n[Deleting Old Outputs]")
     
     files = glob.glob(outputDir+"*.csv")
-    for f in files:
-        os.remove(f)
+    deleteOldFiles(files)
     
-    print("[Deletion Completed]")
-
     files = glob.glob(inputDir+"*.txt")
-
-    print("\n[Processing txt files]:")
-    for f in files:
-        data = readFromTXT(f)
-
-        name = os.path.basename(f)
-        newName = name[:-4]
-        writeCSV(data, outputDir+newName+".csv")
-        
-        print("-\t" + newName)
-
-    print("\n[Script Completed]")
-
-
-      
-
+    processFiles(files, outputDir)
