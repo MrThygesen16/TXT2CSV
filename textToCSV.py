@@ -1,9 +1,8 @@
-from array import array
 import os
 import glob
 
 # function that writes the data to the csv files
-def writeCSV(data: array, fileName: str) -> str:
+def writeCSV(data: list, fileName: str) -> str:
     numCol = len(data[0])-1
     with open(fileName, "w") as file:     
         for row in data:
@@ -20,7 +19,7 @@ def writeCSV(data: array, fileName: str) -> str:
 
 # function to read data from txt files
 # return an array
-def readFromTXT(filename: str) -> array:
+def readFromTXT(filename: str) -> list:
     with open(filename) as f:
         lines = f.readlines()
 
