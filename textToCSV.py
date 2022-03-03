@@ -31,17 +31,19 @@ def readFromTXT(filename: str) -> list:
 
 
 # function to delete old files
-def deleteOldFiles(files: str):
+def deleteOldFiles(files: str) -> None:
     print("\n[Deleting Old Outputs]")
     for f in files:
+        print("-\t" + f)
         os.remove(f)
     print("[Deletion Completed]")
 
 
 # function for processing the files
-def processFiles(files: str, outputDir: str):
+def processFiles(files: str, outputDir: str) -> None:
     print("\n[Processing txt files]:")
     for f in files:
+        
         data = readFromTXT(f)
 
         name = os.path.basename(f)
@@ -51,11 +53,10 @@ def processFiles(files: str, outputDir: str):
         writeCSV(data, outputDir+newName+".csv")
         
         print("-\t" + newName)
-    print("\n[Processing Completed]")
+    print("[Processing Completed]")
 
 
-if __name__ == '__main__':
-    
+def start() -> None:
     print("\n[Script Running]")
     
     script_dir = os.path.dirname(__file__) #<-- absolute dir the script is in
@@ -75,3 +76,10 @@ if __name__ == '__main__':
     
     files = glob.glob(inputDir+"*.txt")
     processFiles(files, outputDir)
+    
+    print("\n[Script Finished]")
+
+
+
+if __name__ == '__main__':
+    start()
